@@ -28,6 +28,7 @@ If you think setting up docker is a single cmd task then you are wrong!... I hop
   ```
   sudo apt update && sudo apt upgrade
   ```
+
 - **else** run below commands
   ```
   echo -e "[network]\ngenerateResolvConf = false" | sudo tee -a /etc/wsl.conf
@@ -38,6 +39,7 @@ If you think setting up docker is a single cmd task then you are wrong!... I hop
   ```
   echo nameserver 1.1.1.1 | sudo tee /etc/resolv.conf
   ```
+
 - if the errors persist then try the below commands
   ```
   netsh winsock reset
@@ -64,6 +66,7 @@ If you think setting up docker is a single cmd task then you are wrong!... I hop
   sudo apt install --no-install-recommends apt-transport-https ca-certificates curl gnupg2
   ```
   ![](images/image-10.png)
+
 - (install dependencies)
   ```
   source /etc/os-release
@@ -73,11 +76,13 @@ If you think setting up docker is a single cmd task then you are wrong!... I hop
   curl -fsSL https://download.docker.com/linux/${ID}/gpg | sudo tee /etc/apt/trusted.gpg.d/docker.asc
   ```
   ![](images/image-13.png)
+  
 - (setup docker repo)
   ```
   echo "deb [arch=amd64] https://download.docker.com/linux/${ID} ${VERSION_CODENAME} stable" | sudo tee /etc/apt/sources.list.d/docker.list
   ```
   ![](images/image-14.png)
+
 - Add repo to source and run update docker repo(cli-tools) 
   ```
   sudo apt update
@@ -90,14 +95,17 @@ If you think setting up docker is a single cmd task then you are wrong!... I hop
   sudo apt install docker-ce docker-ce-cli containerd.io
   ```
   ![](images/image-16.png)
+
 - add user to docker group
   ```
   sudo usermod -aG docker $USER
   ```
+
 - logout of WSL (You may have to execute twice)
   ```
   exit
   ```
+
 - login to wsl
   ```
   wsl
@@ -110,30 +118,62 @@ If you think setting up docker is a single cmd task then you are wrong!... I hop
 
 ## Run docker daemon:
 > NOTE: You will have to run the powershell in admin mode to run the sudo dockerd command
+- First check if the service is running int he background
+  ```
+  ps axf | grep docker
+  ```
+  ![alt text](images/image-27.png)
+
+- If the service is not running in the background then run...
   ```
   sudo dockerd
   ```
   ![](images/image-18.png)
   - (should get: `API listen on /var/run/docker.sock` at the end)
-  - If you see any error run this command and rerun the above command
+  
+- Alternatively you can start the daemon in the background on subsequent logins
+  ```
+  service docker start
+  ```
+  ![](images/image-25.png)
+
+- Alternatively you can add this command from `$HOME` directory
+  ```
+  sudo nano -l .profile
+  ```
+  ![alt text](images/image-28.png)
+
+- When you close the WSL and restart you should see
+  ![alt text](images/image-29.png)
+
+- If you see any error run this command and rerun the above command
   ```
   ps axf | grep docker | grep -v grep | awk '{print "kill -9 " $1}' | sudo sh
   ```
+
 - To test the docker open another instance of WSL
   ```
   docker run hello-world
   ```
   ![](images/image-19.png)
 
+- You can check the list of docker images
+  ```
+  docker images
+  ```
+  ![alt text](images/image-26.png)
+
 ## Issue you may face
 - apt update and upgrade not working
   ```
   sudo nano /etc/resolv.conf
   ```
+  
 - Change nameserver to following line
   ```
   nameserver 8.8.8.8
   ```
+
 - To make this change permanent create file **_/etc/wsl.conf_** and add following
   ```
   sudo nano /etc/resolv.conf
