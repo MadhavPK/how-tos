@@ -139,7 +139,9 @@ If you think setting up docker is a single cmd task then you are wrong!... I hop
 
 - Alternatively you can add this command from `$HOME` directory
   ```
+  cd ~
   sudo nano -l .profile
+  sudo service docker status || sudo service docker start
   ```
   ![alt text](images/image-28.png)
 
