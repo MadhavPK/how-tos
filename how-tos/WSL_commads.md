@@ -1,84 +1,11 @@
-# Setup Docker on Windows Subsystem for Linux (WSL)
-> **NOTE**:
-> 1. Following commands must be executed in ***admin mode power shell***
-> 2. For more info on [WSL](https://docs.microsoft.com/en-us/windows/wsl/install-win10)
-> 
-## Setting up WSL in power shell
-- Download and install [WSL2](https://docs.microsoft.com/en-us/windows/wsl/install-manual#step-4---download-the-linux-kernel-update-package)
-
-- To see a list of the Linux distributions 
-  ```
-  wsl --list -o
-  ```
-  ![](images/image.png)
-  
-- Install latest Ubuntu in wsl 
-  ```
-  wsl --install -d Ubuntu
-  ```
-  ![](images/image-1.png)
-  ![](images/image-2.png)
-  ![](images/image-3.png)
-
-- Set WSL version to 2 
-  ```
-  wsl --set-version Ubuntu 2
-  ```
-  ![](images/image-4.png)
-- To check the WSL mode 
-  ```
-  wsl -l -v
-  ```
-  ![](images/image-5.png)
-- To update the WSL kernel 
-  ```
-  wsl --update
-  ```
-
-## On Windows
-- Accessing wsl files in Windows Explorer. Type the following after starting wsl in File Explorer Address bar
-  ```
-  \\wsl$
-  ```
-
-## On WSL
-Command                                     | Description
----                                         | ---
-sudo apt-get update && sudo apt-get upgrade | Update and upgrade in one command
-sudo -i 		                                | To become root
-uname -a		                                | Entire name of system
-cd /mnt/c 		                              | C drive
-cd /mnt/d 		                              | D drive
-
-
-## Unable to access internet through WSL
-- If ping google.com doesn't work try following. Getting `sudo apt update && apt upgrade` working.
-```
-sudo nano /etc/resolv.conf
-```
-- Change nameserver to following line
-```
-nameserver 8.8.8.8
-```
-![](images/image-6.png)
-- To make this change permanent create file _**/etc/wsl.conf**_
-```
-sudo nano /etc/wsl.conf
-```
-- Add following to the file
-```
-[network]
-generateResolvConf = false
-```
-![](images/image-7.png)  
-
+# Common commands for WSL
 ## Removable Media and Network Drives
 - Mount removable media: (e.g. E:)
 ```
 sudo mkdir /mnt/e
 ```
 ```
-sudo mount -t drvfs D: /mnt/e
+sudo mount -t drvfs E: /mnt/e
 ```
 - To safely unmount
 ```
@@ -247,6 +174,40 @@ sudo apt update && sudo apt upgrade
 sudo do-release-upgrade
 ```
 - Check the ubuntu version in your system
+```
+lsb_release -a
+```
+
+## Search files and folders with name
+```
+ls -al | grep "github"
+```
+```
+find . -name Document.txt || touch Document.txt
+```
+```
+find . -name "poe*" # This cmd will go through all the folders
+```
+
+## List disks on the linux
+```
+lsblk
+```
+
+## nano login with these swithes
+```
+nano -clgim_% /etc/wsl.conf
+```
+
+## Adding stuff to file using tee
+```
+echo nameserver 1.1.1.1 | sudo tee /etc/resolv.conf
+```
+
+## Info of the distro
+```
+cat /etc/os-release
+```
 ```
 lsb_release -a
 ```
